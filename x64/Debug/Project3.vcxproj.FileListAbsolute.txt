@@ -1,0 +1,5 @@
+C:\Users\pulse\Desktop\School\COP3530\Project3\x64\Debug\Project3.vcxproj.AssemblyReference.cache
+C:\Users\pulse\Desktop\School\COP3530\Project3\x64\Debug\Project3.vcxproj.SuggestedBindingRedirects.cache
+C:\Users\pulse\Desktop\School\COP3530\Project3\x64\Debug\Project3.exe
+C:\Users\pulse\Desktop\School\COP3530\Project3\x64\Debug\Project3.MyForm.resources
+C:\Users\pulse\Desktop\School\COP3530\Project3\x64\Debug\Project3.vcxproj.GenerateResource.cache

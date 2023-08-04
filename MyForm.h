@@ -300,6 +300,11 @@ namespace Project3 {
 		if (e->KeyChar == (char)13) {
 			String^ zipCode = this->zipInput->Text;
 			bool validEntry = true;
+			if (zipList->Items->Count == 2) {
+				MessageBox::Show("Up to two zip codes can be shown at the same time.");
+				validEntry = false; // needed?
+				return;
+			}
 			for each (ListViewItem ^ i in zipList->Items) {
 				if (i->Text == zipCode) {
 					MessageBox::Show("Please enter a unique 5 digit zip-code");
@@ -314,6 +319,7 @@ namespace Project3 {
 			}
 			else {
 				MessageBox::Show("Please enter a 5 digit zip-code");
+				validEntry = false; // added, but is this even needed?
 			}
 		}
 	}

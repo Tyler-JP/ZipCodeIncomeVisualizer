@@ -3,6 +3,7 @@
 #include "key_val.h"
 #include "container.h"
 #include <fstream>
+#include <string>
 
 namespace Project3 {
 
@@ -28,6 +29,7 @@ namespace Project3 {
 			//
 			hashMap = new HashMap();
 			keyPair = new AssociationList();
+			incomeBracketRanges = gcnew array<String^>(6) { "<$25,000", "$25,000-$50,000", "$50,000-$75,000", "$75,000-$100,000", "$100,000-$200,000", ">$200,000" };
 		}
 
 	protected:
@@ -46,6 +48,7 @@ namespace Project3 {
 	private:
 		HashMap *hashMap;
 		AssociationList *keyPair;
+		array<String^>^ incomeBracketRanges;
 
 	private: System::Windows::Forms::RadioButton^ keypairRadio;
 	private: System::Windows::Forms::RadioButton^ hashtableRadio;
@@ -336,16 +339,18 @@ namespace Project3 {
 			}
 			if (!exists) {
 				int currentZipcodeInt  = System::Convert::ToInt32(currentZipcode);
-				int zipVal = 0;
+				std::array<int, 6> incomeList;
 				if (this->keypairRadio->Checked) {
 					std::pair<bool, AssociationList::Container> result = keyPair->retrieve(currentZipcodeInt);
-					zipVal = result.second.zipCode;
+					incomeList = result.second.incomes;
 				}
 				else if (this->hashtableRadio->Checked) {
 					std::pair<bool, HashMap::Container> result = hashMap->retrieve(currentZipcodeInt);
-					zipVal = result.second.zipCode;
+					incomeList = result.second.incomes;
 				}
-				zipChart->Series["Zipcode"]->Points->AddXY(currentZipcode, zipVal);
+				for (int i = 0; i < 6; i++) {
+					zipChart->Series["Zipcode"]->Points->AddXY(incomeBracketRanges[i], incomeList[i]);
+				}
 			}
 		}
 	}

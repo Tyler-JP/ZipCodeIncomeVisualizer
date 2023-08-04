@@ -12,7 +12,7 @@
 
 // hash map class
 class HashMap {
-private:
+public:
     // data class to store zip code information
     struct Container {
         const int zipCode;

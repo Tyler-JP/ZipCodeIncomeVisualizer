@@ -8,3 +8,8 @@ C:\Users\jnche\OneDrive\Desktop\COP3530\ZipCodeIncomeVisualizer\x64\Debug\Projec
 C:\Users\jnche\OneDrive\Desktop\COP3530\ZipCodeIncomeVisualizer\x64\Debug\Project3.MyForm.resources
 C:\Users\jnche\OneDrive\Desktop\COP3530\ZipCodeIncomeVisualizer\x64\Debug\Project3.vcxproj.GenerateResource.cache
 C:\Users\jnche\OneDrive\Desktop\COP3530\ZipCodeIncomeVisualizer\x64\Debug\Project3.exe
+C:\Users\pulse\Desktop\School\COP3530\FinalProject\ZipCodeIncomeVisualizer\x64\Debug\Project3.vcxproj.AssemblyReference.cache
+C:\Users\pulse\Desktop\School\COP3530\FinalProject\ZipCodeIncomeVisualizer\x64\Debug\Project3.vcxproj.SuggestedBindingRedirects.cache
+C:\Users\pulse\Desktop\School\COP3530\FinalProject\ZipCodeIncomeVisualizer\x64\Debug\Project3.MyForm.resources
+C:\Users\pulse\Desktop\School\COP3530\FinalProject\ZipCodeIncomeVisualizer\x64\Debug\Project3.vcxproj.GenerateResource.cache
+C:\Users\pulse\Desktop\School\COP3530\FinalProject\ZipCodeIncomeVisualizer\x64\Debug\Project3.exe

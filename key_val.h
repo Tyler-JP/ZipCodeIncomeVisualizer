@@ -26,6 +26,8 @@ private:
     Node* headNode;
 
 public:
+    typedef TaxInfo Container;
+
     AssociationList();
     ~AssociationList();
 

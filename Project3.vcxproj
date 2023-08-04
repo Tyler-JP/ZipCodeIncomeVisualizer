@@ -28,10 +28,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="hash_map.cpp" />
+    <ClCompile Include="key_val.cpp" />
     <ClCompile Include="MyForm.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="container.h" />
     <ClInclude Include="hash_map.h" />
+    <ClInclude Include="key_val.h" />
     <ClInclude Include="MyForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>

@@ -1,4 +1,8 @@
 #pragma once
+#include "hash_map.h"
+#include "key_val.h"
+#include "container.h"
+#include <fstream>
 
 namespace Project3 {
 
@@ -22,6 +26,8 @@ namespace Project3 {
 			//
 			//TODO: Add the constructor code here
 			//
+			hashMap = new HashMap();
+			keyPair = new AssociationList();
 		}
 
 	protected:
@@ -30,11 +36,17 @@ namespace Project3 {
 		/// </summary>
 		~MyForm()
 		{
+			delete hashMap;
+			delete keyPair;
 			if (components)
 			{
 				delete components;
 			}
 		}
+	private:
+		HashMap *hashMap;
+		AssociationList *keyPair;
+
 	private: System::Windows::Forms::RadioButton^ keypairRadio;
 	private: System::Windows::Forms::RadioButton^ hashtableRadio;
 	private: System::Windows::Forms::Label^ zipLabel;
@@ -78,8 +90,8 @@ namespace Project3 {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			System::Windows::Forms::DataVisualization::Charting::ChartArea^ chartArea2 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
-			System::Windows::Forms::DataVisualization::Charting::Series^ series2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::ChartArea^ chartArea1 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
+			System::Windows::Forms::DataVisualization::Charting::Series^ series1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
 			this->keypairRadio = (gcnew System::Windows::Forms::RadioButton());
 			this->hashtableRadio = (gcnew System::Windows::Forms::RadioButton());
 			this->zipLabel = (gcnew System::Windows::Forms::Label());
@@ -96,6 +108,7 @@ namespace Project3 {
 			// keypairRadio
 			// 
 			this->keypairRadio->AutoSize = true;
+			this->keypairRadio->Checked = true;
 			this->keypairRadio->Font = (gcnew System::Drawing::Font(L"Malgun Gothic", 18, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->keypairRadio->Location = System::Drawing::Point(39, 9);
@@ -119,7 +132,6 @@ namespace Project3 {
 			this->hashtableRadio->RightToLeft = System::Windows::Forms::RightToLeft::Yes;
 			this->hashtableRadio->Size = System::Drawing::Size(197, 45);
 			this->hashtableRadio->TabIndex = 7;
-			this->hashtableRadio->TabStop = true;
 			this->hashtableRadio->Text = L"Hash Table";
 			this->hashtableRadio->TextAlign = System::Drawing::ContentAlignment::TopCenter;
 			this->hashtableRadio->UseVisualStyleBackColor = true;
@@ -136,14 +148,14 @@ namespace Project3 {
 			// 
 			// zipChart
 			// 
-			chartArea2->Name = L"ChartArea1";
-			this->zipChart->ChartAreas->Add(chartArea2);
+			chartArea1->Name = L"ChartArea1";
+			this->zipChart->ChartAreas->Add(chartArea1);
 			this->zipChart->Location = System::Drawing::Point(28, 314);
 			this->zipChart->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->zipChart->Name = L"zipChart";
-			series2->ChartArea = L"ChartArea1";
-			series2->Name = L"Zipcode";
-			this->zipChart->Series->Add(series2);
+			series1->ChartArea = L"ChartArea1";
+			series1->Name = L"Zipcode";
+			this->zipChart->Series->Add(series1);
 			this->zipChart->Size = System::Drawing::Size(443, 362);
 			this->zipChart->TabIndex = 10;
 			this->zipChart->Text = L"chart1";
@@ -249,6 +261,19 @@ namespace Project3 {
 		}
 #pragma endregion
 	private: System::Void MyForm_Load(System::Object^ sender, System::EventArgs^ e) {
+		std::fstream file("data.csv");
+		if (!file.is_open()) {
+			MessageBox::Show("Error opening file");
+			return;
+		}
+		else {
+			file.clear();
+			file.seekg(0, std::ios::beg); // reset file pointer
+			keyPair->createFromFile(file);
+			file.clear();
+			file.seekg(0, std::ios::beg); // reset file pointer
+			hashMap->createTableFromFile(file);
+		}
 	}
 	private: System::Void textBox2_TextChanged(System::Object^ sender, System::EventArgs^ e) {
 	}
@@ -304,7 +329,17 @@ namespace Project3 {
 				}
 			}
 			if (!exists) {
-				zipChart->Series["Zipcode"]->Points->AddXY(currentZipcode, 1000);
+				int currentZipcodeInt  = System::Convert::ToInt32(currentZipcode);
+				int zipVal = 0;
+				if (this->keypairRadio->Checked) {
+					std::pair<bool, AssociationList::Container> result = keyPair->retrieve(currentZipcodeInt);
+					zipVal = result.second.zipCode;
+				}
+				else if (this->hashtableRadio->Checked) {
+					std::pair<bool, HashMap::Container> result = hashMap->retrieve(currentZipcodeInt);
+					zipVal = result.second.zipCode;
+				}
+				zipChart->Series["Zipcode"]->Points->AddXY(currentZipcode, zipVal);
 			}
 		}
 	}

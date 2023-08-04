@@ -3,3 +3,8 @@ C:\Users\pulse\Desktop\School\COP3530\Project3\x64\Debug\Project3.vcxproj.Sugges
 C:\Users\pulse\Desktop\School\COP3530\Project3\x64\Debug\Project3.exe
 C:\Users\pulse\Desktop\School\COP3530\Project3\x64\Debug\Project3.MyForm.resources
 C:\Users\pulse\Desktop\School\COP3530\Project3\x64\Debug\Project3.vcxproj.GenerateResource.cache
+C:\Users\jnche\OneDrive\Desktop\COP3530\ZipCodeIncomeVisualizer\x64\Debug\Project3.vcxproj.AssemblyReference.cache
+C:\Users\jnche\OneDrive\Desktop\COP3530\ZipCodeIncomeVisualizer\x64\Debug\Project3.vcxproj.SuggestedBindingRedirects.cache
+C:\Users\jnche\OneDrive\Desktop\COP3530\ZipCodeIncomeVisualizer\x64\Debug\Project3.MyForm.resources
+C:\Users\jnche\OneDrive\Desktop\COP3530\ZipCodeIncomeVisualizer\x64\Debug\Project3.vcxproj.GenerateResource.cache
+C:\Users\jnche\OneDrive\Desktop\COP3530\ZipCodeIncomeVisualizer\x64\Debug\Project3.exe

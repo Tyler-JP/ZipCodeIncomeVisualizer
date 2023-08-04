@@ -1,8 +1,9 @@
 #pragma once
+
+#include "tax_info.h"
+#include "assoc_list.h"
 #include "hash_map.h"
-#include "key_val.h"
-#include "container.h"
-#include <fstream>
+#include "helpers.h"
 
 namespace Project3 {
 
@@ -26,8 +27,8 @@ namespace Project3 {
 			//
 			//TODO: Add the constructor code here
 			//
-			hashMap = new HashMap();
-			keyPair = new AssociationList();
+			hashMap = new HashMap<TaxInfo>();
+			keyPair = new AssociationList<TaxInfo>();
 		}
 
 	protected:
@@ -44,8 +45,8 @@ namespace Project3 {
 			}
 		}
 	private:
-		HashMap *hashMap;
-		AssociationList *keyPair;
+		HashMap<TaxInfo> *hashMap;
+		AssociationList<TaxInfo> *keyPair;
 
 	private: System::Windows::Forms::RadioButton^ keypairRadio;
 	private: System::Windows::Forms::RadioButton^ hashtableRadio;
@@ -269,10 +270,10 @@ namespace Project3 {
 		else {
 			file.clear();
 			file.seekg(0, std::ios::beg); // reset file pointer
-			keyPair->createFromFile(file);
+			createTaxTableFromFile(file, *keyPair);
 			file.clear();
 			file.seekg(0, std::ios::beg); // reset file pointer
-			hashMap->createTableFromFile(file);
+			createTaxTableFromFile(file, *hashMap);
 		}
 	}
 	private: System::Void textBox2_TextChanged(System::Object^ sender, System::EventArgs^ e) {
@@ -332,11 +333,11 @@ namespace Project3 {
 				int currentZipcodeInt  = System::Convert::ToInt32(currentZipcode);
 				int zipVal = 0;
 				if (this->keypairRadio->Checked) {
-					std::pair<bool, AssociationList::Container> result = keyPair->retrieve(currentZipcodeInt);
+					std::pair<bool, TaxInfo> result = keyPair->retrieve(currentZipcodeInt);
 					zipVal = result.second.zipCode;
 				}
 				else if (this->hashtableRadio->Checked) {
-					std::pair<bool, HashMap::Container> result = hashMap->retrieve(currentZipcodeInt);
+					std::pair<bool, TaxInfo> result = hashMap->retrieve(currentZipcodeInt);
 					zipVal = result.second.zipCode;
 				}
 				zipChart->Series["Zipcode"]->Points->AddXY(currentZipcode, zipVal);

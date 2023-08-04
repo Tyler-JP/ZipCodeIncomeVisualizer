@@ -1,36 +1,131 @@
 #pragma once
-#include <string>
-#include <array>
-#include <vector>
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <random>
-#include <set>
-#include <iomanip>
-#define TABLESIZE 13871 // original 13871
 
-// hash map class
+#include <utility>
+
+#include "key_val.h"
+
+template <typename T>
 class HashMap {
+private:
+    Node<T>** table;
+
+    unsigned int filledBuckets = 0;
+    unsigned int tableSize = 2;
+    const float maxLoadFactor = 1.0f;
+
+    const unsigned int hash(const unsigned int key, const unsigned int size) const { 
+        return key % size; 
+    }
+
+    Node<T>** createTable(const unsigned int size);
+    void deleteTable(Node<T>** table, const unsigned int size);
+
 public:
-    // data class to store zip code information
-    struct Container {
-        const int zipCode;
-        const std::string abbreviation;
-        const std::array<int, 6> incomes;
-        Container() : zipCode(-1), abbreviation("N/A"), incomes({ -1, -1, -1, -1, -1, -1 }) {};
-        Container(int zipCode, std::string abbreviation, std::array<int, 6> incomes) : zipCode(zipCode), abbreviation(abbreviation), incomes(incomes) {};
-    };
-    std::array<std::vector<Container>, TABLESIZE> table;
-    int filledBuckets = 0;
-    const int tableSize = TABLESIZE;
-    const int hash(const int zipCode) const;
-public:
-    HashMap() {};
-    void createTableFromFile(std::fstream& file);
-    const std::pair<bool, const Container> retrieve(const int zipCode) const;
-    void printRandomZipCodes(const int seed) const;
-    const float getLoadFactor() const;
-    void printLoadFactor() const;
-    void printZipCodeData(const int zipCode) const;
+    HashMap();
+    ~HashMap();
+
+    HashMap(const HashMap&) = delete;
+    HashMap& operator= (const HashMap&) = delete;
+
+    void insert(const unsigned int key, T value);
+    const std::pair<bool, const T> retrieve(const unsigned int key) const;
+    
+    const float getLoadFactor() const { return float(filledBuckets) / float(tableSize); }
+    const unsigned int getBucketCount() const { return filledBuckets; }
+    const unsigned int getTableSize() const { return tableSize; }
 };
+
+template <typename T>
+Node<T>** HashMap<T>::createTable(const unsigned int size)
+{
+    Node<T>** newTable = new Node<T>*[size];
+    for (int i = 0; i < size; i++)
+        newTable[i] = nullptr;
+    return newTable;
+}
+
+template <typename T>
+void HashMap<T>::deleteTable(Node<T>** table, const unsigned int size)
+{
+    for (int i = 0; i < size; i++)
+    {
+        Node<T>* previous = nullptr;
+        Node<T>* iterator = table[i];
+        while (iterator != nullptr)
+        {
+            previous = iterator;
+            iterator = iterator->nextNode;
+            delete previous;
+        };
+    }
+    delete[] table;
+}
+
+template <typename T>
+HashMap<T>::HashMap() {
+    filledBuckets = 0;
+    tableSize = 2;
+    table = createTable(tableSize);
+}
+
+template <typename T>
+HashMap<T>::~HashMap()
+{
+    deleteTable(table, tableSize);
+}
+
+// pushes key and value onto data structure
+template <typename T>
+void HashMap<T>::insert(const unsigned int key, T value) {
+    Node<T>* bucket = table[hash(key, tableSize)];
+    if (bucket == nullptr)
+        table[hash(key, tableSize)] = new Node<T>(key, value);
+    else
+        table[hash(key, tableSize)] = new Node<T>(key, value, bucket);
+    filledBuckets += 1;
+
+    // rehash if over load factor
+    if (getLoadFactor() > maxLoadFactor)
+    {
+        // initialize new table
+        const unsigned int newTableSize = tableSize * 2;
+        Node<T>** newTable = createTable(newTableSize);
+
+        // rehash old table into new
+        filledBuckets = 0;
+        for (int i = 0; i < tableSize; i++)
+        {
+            Node<T>* iterator = table[i];
+            while (iterator != nullptr)
+            {
+                Node<T>* newBucket = newTable[hash(iterator->key, newTableSize)];
+                if (newBucket == nullptr) {
+                    newTable[hash(iterator->key, newTableSize)] = new Node<T>(iterator->key, iterator->value);
+                }
+                else {
+                    newTable[hash(iterator->key, newTableSize)] = new Node<T>(iterator->key, iterator->value, newBucket);
+                }
+                filledBuckets += 1;
+                iterator = iterator->nextNode;
+            };
+        }
+
+        // delete old table and set to new table
+        deleteTable(table, tableSize);
+
+        tableSize = newTableSize;
+        table = newTable;
+    }
+}
+
+// returns stored container to respective key
+template <typename T>
+const std::pair<bool, const T> HashMap<T>::retrieve(const unsigned int key) const {
+    Node<T>* current = table[hash(key, tableSize)];
+    while (current != nullptr) {
+        if (current->key == key)
+            return std::make_pair(true, current->value);
+        current = current->nextNode;
+    }
+    return std::make_pair(false, T());
+}

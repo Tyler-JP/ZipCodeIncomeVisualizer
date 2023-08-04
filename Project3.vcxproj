@@ -38,6 +38,7 @@
     <ClInclude Include="MyForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MyForm.resx">
@@ -46,6 +47,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="data.csv" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Project3.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

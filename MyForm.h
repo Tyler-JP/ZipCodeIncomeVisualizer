@@ -37,8 +37,16 @@ namespace Project3 {
 		/// </summary>
 		~MyForm()
 		{
-			delete hashMap;
-			delete keyPair;
+			if (hashMap)
+			{
+				delete hashMap;
+				hashMap = nullptr;
+			}
+			if (keyPair)
+			{
+				delete keyPair;
+				keyPair = nullptr;
+			}
 			if (components)
 			{
 				delete components;

@@ -1,5 +1,6 @@
 #pragma once
 
+// Templated linked list node
 template <typename T>
 struct Node
 {

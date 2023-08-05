@@ -40,7 +40,7 @@ void printRandomZipCodes(const int seed, const D& dataStructure) {
     }
 }
 
-// Creates hash table from csv file
+// Creates data structure from csv file
 template <typename D>
 void createTaxTableFromFile(std::fstream& file, D& dataStructure) {
     std::string line;

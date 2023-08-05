@@ -14,11 +14,15 @@ private:
     unsigned int tableSize = 2;
     const float maxLoadFactor = 1.0f;
 
+    // Hashes a key based on the given table size
     const unsigned int hash(const unsigned int key, const unsigned int size) const {
         return key % size;
     }
 
+    // Dynamically creates a table of a given size
     Node<T>** createTable(const unsigned int size);
+
+    // Deletes a table of a given size
     void deleteTable(Node<T>** table, const unsigned int size);
 
 public:

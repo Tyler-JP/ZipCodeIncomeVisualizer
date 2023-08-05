@@ -1,5 +1,6 @@
 #pragma once
 
+#include <assert.h>
 #include <utility>
 
 #include "key_val.h"
@@ -92,7 +93,7 @@ void HashMap<T>::insert(const unsigned int key, T value) {
         Node<T>** newTable = createTable(newTableSize);
 
         // rehash old table into new
-        filledBuckets = 0;
+        int newFilledBuckets = 0;
         for (int i = 0; i < tableSize; i++)
         {
             Node<T>* iterator = table[i];
@@ -105,10 +106,11 @@ void HashMap<T>::insert(const unsigned int key, T value) {
                 else {
                     newTable[hash(iterator->key, newTableSize)] = new Node<T>(iterator->key, iterator->value, newBucket);
                 }
-                filledBuckets += 1;
+                newFilledBuckets += 1;
                 iterator = iterator->nextNode;
             };
         }
+        assert(newFilledBuckets == filledBuckets);
 
         // delete old table and set to new table
         deleteTable(table, tableSize);

@@ -27,18 +27,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\container.h" />
+    <ClInclude Include="include\assoc_list.h" />
     <ClInclude Include="include\hash_map.h" />
+    <ClInclude Include="include\helpers.h" />
     <ClInclude Include="include\key_val.h" />
     <ClInclude Include="include\MyForm.h" />
+    <ClInclude Include="include\resource.h" />
+    <ClInclude Include="include\tax_info.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\hash_map.cpp" />
-    <ClCompile Include="src\key_val.cpp" />
     <ClCompile Include="src\MyForm.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="data\data.csv" />
+    <None Include="include\MyForm" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

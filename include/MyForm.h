@@ -1,7 +1,11 @@
 #pragma once
 #include "../include/hash_map.h"
 #include "../include/key_val.h"
-#include "../include/container.h"
+#include "../include/assoc_list.h"
+#include "../include/helpers.h"
+#include "../include/resource.h"
+#include "../include/tax_info.h"
+
 #include <fstream>
 
 namespace Project3 {
@@ -23,8 +27,8 @@ namespace Project3 {
 		MyForm(void)
 		{
 			InitializeComponent();
-			hashMap = new HashMap();
-			keyPair = new AssociationList();
+			hashMap = new HashMap<TaxInfo>();
+			keyPair = new AssociationList<TaxInfo>();
 			incomeRanges = gcnew array<String^>(6);
 			incomeRanges[0] = "<$25k";
 			incomeRanges[1] = "$25k-$50k";
@@ -56,8 +60,8 @@ namespace Project3 {
 			}
 		}
 	private:
-		HashMap* hashMap;
-		AssociationList* keyPair;
+		HashMap<TaxInfo>* hashMap;
+		AssociationList<TaxInfo>* keyPair;
 		array<String^>^ incomeRanges;
 
 	private: System::Windows::Forms::RadioButton^ keypairRadio;
@@ -270,10 +274,10 @@ namespace Project3 {
 		else {
 			file.clear();
 			file.seekg(0, std::ios::beg); // reset file pointer
-			keyPair->createFromFile(file);
+			createTaxTableFromFile(file, *keyPair);
 			file.clear();
 			file.seekg(0, std::ios::beg); // reset file pointer
-			hashMap->createTableFromFile(file);
+			createTaxTableFromFile(file, *hashMap);
 		}
 	}
 	private: System::Void textBox2_TextChanged(System::Object^ sender, System::EventArgs^ e) {
@@ -336,12 +340,12 @@ namespace Project3 {
 				std::array<int, 6> zipIncomes; // Array to hold each income value
 				bool success = false;
 				if (this->keypairRadio->Checked) {
-					std::pair<bool, AssociationList::Container> result = keyPair->retrieve(currentZipcodeInt);
+					std::pair<bool, TaxInfo> result = keyPair->retrieve(currentZipcodeInt);
 					zipIncomes = result.second.incomes;// Retrieve income from respective data structure
 					success = result.first;
 				}
 				else if (this->hashtableRadio->Checked) {
-					std::pair<bool, HashMap::Container> result = hashMap->retrieve(currentZipcodeInt);
+					std::pair<bool, TaxInfo> result = hashMap->retrieve(currentZipcodeInt);
 					zipIncomes = result.second.incomes; // Retrieve income from respective data structure
 					success = result.first;
 				}

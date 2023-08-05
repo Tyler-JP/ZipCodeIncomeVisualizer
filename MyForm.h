@@ -319,27 +319,45 @@ namespace Project3 {
 	}
 	
 	private: System::Void fillChart() {
+
+		zipChart->Series->Clear();
+
+		for (int i = 0; i < 6; i++) {
+			auto series = gcnew System::Windows::Forms::DataVisualization::Charting::Series(); // Create series
+			series->Name = "Income" + i;
+			series->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Bar; // Chart styling
+			zipChart->Series->Add(series); // Adding series
+		}
+
 		for each (ListViewItem ^ i in zipList->Items) {
 			String^ currentZipcode = i->Text;
 			bool exists = false;
-			for each (DataVisualization::Charting::DataPoint ^ point in zipChart->Series["Zipcode"]->Points) {
-				if (point->AxisLabel == currentZipcode) {
-					exists = true;
+			for (int s = 0; s < 6; s++) {
+				for each (DataVisualization::Charting::DataPoint ^ point in zipChart->Series["Income" + s]->Points) {
+					if (point->AxisLabel == currentZipcode) {
+						exists = true;
+						break;
+					}
+				}
+				if (exists) {
 					break;
 				}
 			}
+
 			if (!exists) {
 				int currentZipcodeInt  = System::Convert::ToInt32(currentZipcode);
-				int zipVal = 0;
+				std::array<int, 6> zipIncomes; // Array to hold each income value
 				if (this->keypairRadio->Checked) {
 					std::pair<bool, AssociationList::Container> result = keyPair->retrieve(currentZipcodeInt);
-					zipVal = result.second.zipCode;
+					zipIncomes = result.second.incomes;// Retrieve income from respective data structure
 				}
 				else if (this->hashtableRadio->Checked) {
 					std::pair<bool, HashMap::Container> result = hashMap->retrieve(currentZipcodeInt);
-					zipVal = result.second.zipCode;
+					zipIncomes = result.second.incomes; // Retrieve income from respective data structure
 				}
-				zipChart->Series["Zipcode"]->Points->AddXY(currentZipcode, zipVal);
+				for (int i = 0; i < 6; i++) {
+					zipChart->Series["Income" + i]->Points->AddXY(currentZipcode, zipIncomes[i]); // Add data to chart, 6 bars for each zipcode
+				}
 			}
 		}
 	}
@@ -358,7 +376,9 @@ namespace Project3 {
 		runtimeDisplay->Text = elapsedTime;
 	}
 	private: System::Void resetButton_Click(System::Object^ sender, System::EventArgs^ e) {
-		zipChart->Series["Zipcode"]->Points->Clear(); // clear chart
+		for (int i = 0; i < 6; i++) {
+			zipChart->Series["Income" + i]->Points->Clear(); // clear chart
+		}
 		this->zipList->Items->Clear(); // clear zip code list
 	}
 };

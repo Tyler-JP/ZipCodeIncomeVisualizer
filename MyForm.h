@@ -322,8 +322,9 @@ namespace Project3 {
 
 		zipChart->Series->Clear();
 
+
 		for (int i = 0; i < 6; i++) {
-			auto series = gcnew System::Windows::Forms::DataVisualization::Charting::Series(); // Create series
+			System::Windows::Forms::DataVisualization::Charting::Series^ series = gcnew System::Windows::Forms::DataVisualization::Charting::Series(); // Create series
 			series->Name = "Income" + i;
 			series->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Bar; // Chart styling
 			zipChart->Series->Add(series); // Adding series
@@ -345,11 +346,11 @@ namespace Project3 {
 			}
 
 			if (!exists) {
-				int currentZipcodeInt  = System::Convert::ToInt32(currentZipcode);
-				std::array<int, 6> zipIncomes; // Array to hold each income value
+				int currentZipcodeInt = System::Convert::ToInt32(currentZipcode);
+				std::array<int, 6> zipIncomes;
 				if (this->keypairRadio->Checked) {
 					std::pair<bool, AssociationList::Container> result = keyPair->retrieve(currentZipcodeInt);
-					zipIncomes = result.second.incomes;// Retrieve income from respective data structure
+					zipIncomes = result.second.incomes; // Retrieve income from respective data structure
 				}
 				else if (this->hashtableRadio->Checked) {
 					std::pair<bool, HashMap::Container> result = hashMap->retrieve(currentZipcodeInt);
